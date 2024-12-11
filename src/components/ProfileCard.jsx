@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import "./App.css"; 
+import "../App.css"; 
 
 const ProfileCard = ({ profile, onSummaryClick, onDetailsClick }) => {
   return (
