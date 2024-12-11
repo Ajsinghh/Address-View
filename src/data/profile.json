@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "name": "John Doe",
+    "photo": "https://via.placeholder.com/150",
+    "description": "Software developer specializing in frontend technologies.",
+    "address": "123 Main St, New York, NY, USA"
+  },
+  {
+    "id": "2",
+    "name": "Jane Smith",
+    "photo": "https://via.placeholder.com/150",
+    "description": "Graphic designer with a passion for branding and UI design.",
+    "address": "456 Elm St, Los Angeles, CA, USA"
+  },
+  {
+    "id": "3",
+    "name": "Alice Johnson",
+    "photo": "https://via.placeholder.com/150",
+    "description": "Data analyst with expertise in visualization and insights.",
+    "address": "789 Oak St, Chicago, IL, USA"
+  },
+  {
+    "id": "4",
+    "name": "Michael Brown",
+    "photo": "https://via.placeholder.com/150",
+    "description": "Full-stack developer with experience in cloud solutions.",
+    "address": "101 Pine St, San Francisco, CA, USA"
+  },
+  {
+    "id": "5",
+    "name": "Emily Davis",
+    "photo": "https://via.placeholder.com/150",
+    "description": "Digital marketer specializing in SEO and content strategy.",
+    "address": "202 Maple St, Austin, TX, USA"
+  }
+]
