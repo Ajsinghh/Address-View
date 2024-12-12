@@ -1,18 +1,62 @@
-import  { useState, useRef } from "react";
+import  { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addProfile, deleteProfile, updateProfile } from "../redux/profile/profileSlice";
+import {
+  getStorage,
+  uploadBytesResumable,
+  ref,
+  getDownloadURL,
+} from "firebase/storage";
+import { app } from "../firebase";
 import "../App.css"; 
 
 const AdminDashboard = () => {
+  const fileRef = useRef(null);
+  const [file, setFile] = useState(undefined);
+  const [filePerc, setFilePerc] = useState(0);
+  const [fileUploadError, setFileUploadError] = useState(false);
   const profiles = useSelector((state) => state.profiles);
   const dispatch = useDispatch();
   const nameInputRef = useRef(null);
   const adminRef = useRef(null);
 
+
+  useEffect(() => {
+    if (file) {
+        console.log("File selected:", file);
+      handleFileUpload(file);
+    }
+  }, [file]);
+
+  const handleFileUpload = (file) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + file.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setFilePerc(Math.round(progress));
+      },
+      () => {
+        setFileUploadError(true);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setNewProfile({ ...newProfile, photo: downloadURL });
+        });
+      }
+    );
+  };
+
   const [newProfile, setNewProfile] = useState({
     name: "",
     address: "",
-    photo: "",
+    photo:
+      "https://cdn.pixabay.com/photo/2021/07/25/08/03/account-6491185_640.png",
     description: "",
   });
 
@@ -26,7 +70,13 @@ const AdminDashboard = () => {
   const handleAddProfile = () => {
     if (newProfile.name && newProfile.address && newProfile.description) {
       dispatch(addProfile(newProfile));
-      setNewProfile({ name: "", address: "", photo: "", description: "" });
+      setNewProfile({
+        name: "",
+        address: "",
+        photo:
+          "https://cdn.pixabay.com/photo/2021/07/25/08/03/account-6491185_640.png",
+        description: "",
+      });
     }
   };
 
@@ -61,6 +111,29 @@ const AdminDashboard = () => {
       <div className="add-profile">
         <h3>{editingProfileId ? "Edit Profile" : "Add New Profile"}</h3>
         <input
+          onChange={(e) => setFile(e.target.files[0])}
+          type="file"
+          ref={fileRef}
+          hidden
+          accept="image/*"
+        />
+        <img
+          onClick={() => fileRef.current.click()}
+          className="profile-pic"
+          src={newProfile.photo || "https://pixabay.com/illustrations/icon-user-male-avatar-business-5359553/"}
+        />
+        <p className="text-center text-sm">
+          {fileUploadError ? (
+            <span className="text-red-700">Error Image Upload</span>
+          ) : filePerc > 0 && filePerc < 100 ? (
+            <span className="text-slate-700">{`Uploading ${filePerc}%`}</span>
+          ) : filePerc === 100 ? (
+            <span className="text-green-700">Image Sucessfully Uploaded!</span>
+          ) : (
+            ""
+          )}
+        </p>
+        <input
           type="text"
           name="name"
           placeholder="Name"
@@ -73,13 +146,6 @@ const AdminDashboard = () => {
           name="address"
           placeholder="Address"
           value={newProfile.address}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="photo"
-          placeholder="Photo URL"
-          value={newProfile.photo}
           onChange={handleInputChange}
         />
         <textarea

@@ -6,7 +6,7 @@ const ProfileCard = ({ profile, onSummaryClick, onDetailsClick }) => {
   return (
     <div className="profile-card">
       <img
-        src={profile.picture}
+        src={profile.photo}
         alt={`${profile.name}'s profile`}
         className="profile-pic"
       />
