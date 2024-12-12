@@ -1,8 +1,9 @@
 import  { useState } from "react";
 import ProfileCard from "./ProfileCard";
-import profiles from "../data/profile.json"; // Assuming this is the path to the profile data
+import { useSelector } from "react-redux";
 
 const ProfileList = () => {
+  const profiles = useSelector(store => store.profiles);
   const [searchTerm, setSearchTerm] = useState("");
 
   // Filter profiles based on the search term

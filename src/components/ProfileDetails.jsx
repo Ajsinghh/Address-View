@@ -1,12 +1,12 @@
-import React from "react";
+
 import { useParams, useNavigate } from "react-router-dom";
-import profiles from "../data/profile.json"; // Assuming this is the path to the profile data
+import { useSelector } from "react-redux";
 import "../App.css"; // Optional: Add styles for the component
 
 const ProfileDetail = () => {
   const { id } = useParams(); // Get the profile ID from the route params
   const navigate = useNavigate(); // For navigation
-
+  const profiles = useSelector(store => store.profiles)
   // Find the profile by ID
   const profile = profiles.find((profile) => profile.id === id);
 

@@ -1,11 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import profiles from "../data/profile.json";
+import { useSelector } from "react-redux";
 import "../App.css"; // Optional: Add styles for the component
 
 const MapView = () => {
   const mapRef = useRef(null);
   const { id } = useParams();
+  const profiles = useSelector(store => store.profiles);
 
   useEffect(() => {
     const loadGoogleMapsScript = () => {
