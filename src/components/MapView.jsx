@@ -1,12 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect,useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import "../App.css"; // Optional: Add styles for the component
+import "../App.css"; 
 
 const MapView = () => {
   const mapRef = useRef(null);
   const { id } = useParams();
   const profiles = useSelector(store => store.profiles);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const loadGoogleMapsScript = () => {
@@ -42,25 +45,29 @@ const MapView = () => {
             position: results[0].geometry.location,
             map: map,
           });
+          setLoading(false);
         } else {
-          console.error(
-            "Geocode was not successful for the following reason: " + status
-          );
+          setError(`Geocode error: ${status}`);
+          setLoading(false);
         }
       });
     };
 
     const setupMap = async () => {
       try {
+        setLoading(true);
         await loadGoogleMapsScript();
         const profile = profiles.find((profile) => profile.id === id);
         if (profile) {
           initializeMap(profile.address);
         } else {
-          console.error("Profile not found");
+          setError("Profile not found");
+          setLoading(false);
+          return;
         }
       } catch (error) {
-        console.error("Failed to load Google Maps script:", error);
+        setError(error.message || "Unexpected error occurred");
+        setLoading(false);
       }
     };
 
@@ -69,7 +76,8 @@ const MapView = () => {
 
   return (
     <div className="map-view">
-      
+      {loading && <div className="loading">Loading map...</div>}
+      {error && <div className="error">{error}</div>}
       <div
         id="map"
         ref={mapRef}

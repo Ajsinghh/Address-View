@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import  { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addProfile, deleteProfile, updateProfile } from "../redux/profile/profileSlice";
-import "../App.css"; // Optional: Add styles for the component
+import "../App.css"; 
 
 const AdminDashboard = () => {
   const profiles = useSelector((state) => state.profiles);
   const dispatch = useDispatch();
+  const nameInputRef = useRef(null);
+  const adminRef = useRef(null);
 
   const [newProfile, setNewProfile] = useState({
     name: "",
@@ -36,6 +38,8 @@ const AdminDashboard = () => {
       photo: profile.photo,
       description: profile.description,
     });
+    nameInputRef.current.focus();
+    adminRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleUpdateProfile = () => {
@@ -52,7 +56,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      <h1>Admin Dashboard</h1>
+      <h1 ref={adminRef}>Admin Dashboard</h1>
 
       <div className="add-profile">
         <h3>{editingProfileId ? "Edit Profile" : "Add New Profile"}</h3>
@@ -62,6 +66,7 @@ const AdminDashboard = () => {
           placeholder="Name"
           value={newProfile.name}
           onChange={handleInputChange}
+          ref={nameInputRef}
         />
         <input
           type="text"

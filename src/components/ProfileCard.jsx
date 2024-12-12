@@ -1,28 +1,29 @@
+// ProfileCard.js
 import PropTypes from "prop-types";
-import "../App.css"; 
+import "../App.css";
 
 const ProfileCard = ({ profile, onSummaryClick, onDetailsClick }) => {
   return (
     <div className="profile-card">
       <img
-        className="profile-photo"
-        src={profile.photo || "https://via.placeholder.com/150"}
-        alt={`${profile.name}'s photo`}
+        src={profile.picture}
+        alt={`${profile.name}'s profile`}
+        className="profile-pic"
       />
-      <div className="profile-info">
-        <h3 className="profile-name">{profile.name}</h3>
-        <p className="profile-description">{profile.description}</p>
+      <div className="profile-details">
+        <h3>{profile.name}</h3>
+        <p>{profile.description}</p>
       </div>
       <div className="profile-actions">
         <button
-          className="btn btn-summary"
           onClick={() => onSummaryClick(profile.id)}
+          className="summary-btn"
         >
           Summary
         </button>
         <button
-          className="btn btn-details"
           onClick={() => onDetailsClick(profile.id)}
+          className="details-btn"
         >
           Details
         </button>
@@ -33,9 +34,9 @@ const ProfileCard = ({ profile, onSummaryClick, onDetailsClick }) => {
 
 ProfileCard.propTypes = {
   profile: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    picture: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    photo: PropTypes.string,
     description: PropTypes.string.isRequired,
   }).isRequired,
   onSummaryClick: PropTypes.func.isRequired,

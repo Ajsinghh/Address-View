@@ -1,11 +1,11 @@
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import "../App.css"; // Optional: Add styles for the component
+import "../App.css";
 
 const ProfileDetail = () => {
-  const { id } = useParams(); // Get the profile ID from the route params
-  const navigate = useNavigate(); // For navigation
+  const { id } = useParams(); 
+  const navigate = useNavigate(); 
   const profiles = useSelector(store => store.profiles)
   // Find the profile by ID
   const profile = profiles.find((profile) => profile.id === id);

@@ -1,6 +1,7 @@
 import  { useState } from "react";
 import ProfileCard from "./ProfileCard";
 import { useSelector } from "react-redux";
+import "../App.css"
 
 const ProfileList = () => {
   const profiles = useSelector(store => store.profiles);
